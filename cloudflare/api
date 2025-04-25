@@ -1,0 +1,7 @@
+curl -X POST "https://api.cloudflare.com/client/v4/zones/7e25b1857e4962b0af7e4e0bbf1ce902/dns_records"   -H "X-Auth-Email: devops.gaipp@gmail.com"   -H "X-Auth-Key: ea2d5972cbe897f13cfde34f15d7e9ef21883"   -H "Content-Type: application/json"   --data '{
+    "type": "A",
+    "name": "subdomain.gaippconf.com",
+    "content": "123.123.123.123",
+    "ttl": 60,
+    "proxied": true
+}'
