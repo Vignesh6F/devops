@@ -1,0 +1,3 @@
+sonar cube 
+
+sudo /var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/sonar-scanner/bin/sonar-scanner   -Dsonar.projectKey=vicky   -Dsonar.sources=.   -Dsonar.host.url=http://3.108.31.23:9000   -Dsonar.login=sqp_d73ec5a84aabcbe9947f9ba8977a59b21f74eaee
