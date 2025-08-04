@@ -2,3 +2,16 @@ ssh-copy-id -f "-o IdentityFile <PATH TO PEM FILE>" ubuntu@<INSTANCE-PUBLIC-IP>
 
 sudo cat ~/.ssh/id_ed25519.pub | ssh -i key ubuntu@13.203.200.132 "mkdir -p ~/.ssh && chmod 700 
 ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
+
+
+
+
+
+Option 3: Use Ad-hoc Ansible Command (Quick Test)
+If you just want to run a script quickly without writing a playbook:
+
+
+ansible server1 -m script -a "./files/myscript.sh"
+Script already on remote server:
+
+ansible server1 -a "/path/to/script.sh"
