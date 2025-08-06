@@ -1,0 +1,4 @@
+http://172.235.0.175:8080 /buildByToken/buildWithParameters?token=saas&job=saas&domain=jenkiiiv
+
+
+http://172.235.0.175:8080/job/saas/buildWithParameters?token=saas&domain=vicky
