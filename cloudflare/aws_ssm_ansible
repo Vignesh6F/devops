@@ -1,0 +1,80 @@
+GOAL:
+Use Ansible to manage private EC2 instances via AWS SSM, without SSH or public IP.
+
+Benefits of Using AWS SSM with Ansible:
+
+No need for SSH access or key management.
+Works even if EC2 has no public IP.
+More secure (no open ports).
+Cross-account possible with proper IAM.
+----------
+OVERVIEW OF WHAT YOU NEED
+
+EC2 instance(s) with SSM agent installed and working.
+Proper IAM Role attached to the EC2.
+EC2 must have internet access (via NAT or IGW).
+Ansible with amazon.aws collection installed.
+Ansible inventory configured to use aws_ssm connection plugin.
+----------
+STEP 1: Prepare the EC2 Instance
+
+1.1 Attach IAM Role
+Attach an IAM role to the EC2 instance with this policy:
+
+AmazonSSMManagedInstanceCore
+
+This lets the instance register with Systems Manager.
+
+1.2 Ensure Internet Access (via NAT or IGW)
+
+EC2 must be able to reach SSM endpoints:
+Either via a NAT Gateway (for private subnet) or Internet Gateway.
+Or use VPC Endpoints for SSM if you want fully private networking.
+
+ 1.3 SSM Agent Must Be Running
+On Amazon Linux, Ubuntu, etc., SSM Agent is preinstalled.
+
+To check:
+sudo systemctl status amazon-ssm-agent
+
+
+STEP 2: Configure Ansible on the Control Node
+2.1 Install Required Collection
+On the Ansible control node:
+
+>> ansible-galaxy collection install amazon.aws
+This provides the aws_ssm connection plugin.
+
+
+2.2 Set Up AWS Credentials
+Make sure your Ansible control node has AWS CLI configured with credentials that allow SSM access.
+
+aws configure
+Or set via environment variables:
+export AWS_ACCESS_KEY_ID=...
+export AWS_SECRET_ACCESS_KEY=...
+export AWS_REGION=us-east-1
+
+
+STEP 3: Configure Inventory to Use aws_ssm
+Sample inventory.ini
+[ssm_targets]
+i-0abc123def456gh78(instance-id) ansible_connection=aws_ssm ansible_python_interpreter=/usr/bin/python3
+Use the EC2 instance ID as the inventory name.
+ansible_connection=aws_ssm tells Ansible to use SSM instead of SSH.
+ansible_python_interpreter must match the target's Python path.
+
+ STEP 4: Test Ansible Ping
+ansible -i inventory.ini ssm_targets -m ping
+
+
+| Step | Description                                   |
+| ---- | --------------------------------------------- |
+| 1    | Attach `AmazonSSMManagedInstanceCore` to EC2  |
+| 2    | Ensure internet or VPC endpoint access        |
+| 3    | Ensure SSM agent is running                   |
+| 4    | Install `amazon.aws` collection               |
+| 5    | Use `ansible_connection=aws_ssm` in inventory |
+| 6    | Run Ansible commands – no SSH needed! ✅       |
+
+
