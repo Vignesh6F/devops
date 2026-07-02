@@ -79,3 +79,21 @@ EOF
         
     }
 }
+
+
+##################
+local node issue 
+export NVM_DIR="/var/lib/jenkins/.nvm"
+
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+
+nvm use 22
+
+node -v
+npm -v
+#nvm use 22
+rm -rf node_modules
+rm -rf package-lock.json
+rm -rf dist
+npm i
+npm run build
